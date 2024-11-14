@@ -1,7 +1,7 @@
 import 'package:capstone/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart'; // Import Firebase Realtime Database
+import 'package:firebase_database/firebase_database.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -12,8 +12,7 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final DatabaseReference _database =
-      FirebaseDatabase.instance.ref(); // Reference to the database
+  final DatabaseReference _database = FirebaseDatabase.instance.ref();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
@@ -26,7 +25,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
 
-  // List of user types
   final List<String> _userTypes = [
     'Seller',
     'Buyer',
@@ -48,22 +46,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
 
     try {
-      // Register user using Firebase Authentication
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
       );
 
-      // Get the registered user
       User? user = userCredential.user;
 
       if (user != null) {
-        // Determine profile setup status based on user type
         bool profileSetupComplete =
             (_selectedUserType == 'Admin') ? true : false;
 
-        // Prepare data to save in the Realtime Database
         Map<String, dynamic> userData = {
           'email': _emailController.text,
           'contact_number': _contactNumberController.text,
@@ -72,19 +66,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
           'profile_setup_complete': profileSetupComplete,
         };
 
-        // If the user is a seller, add 'seller_approval' and set it to false
         if (_selectedUserType == 'Seller') {
-          userData['seller_approval'] = false; // Set seller approval to false
+          userData['seller_approval'] = false;
         }
 
-        // Store additional user info in Firebase Realtime Database under 'users/{uid}/userprofiles'
         await _database
             .child("users")
             .child(user.uid)
             .child("userprofiles")
             .set(userData);
 
-        // After successful registration, navigate to the login screen
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => LoginScreen()),
@@ -97,15 +88,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
-  // Function to navigate back to LoginScreen with a left-slide transition
   void _navigateToLogin() {
     Navigator.of(context).pushReplacement(
       PageRouteBuilder(
-        transitionDuration:
-            const Duration(milliseconds: 600), // Animation duration
+        transitionDuration: const Duration(milliseconds: 600),
         pageBuilder: (context, animation, secondaryAnimation) => LoginScreen(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          const begin = Offset(-1.0, 0.0); // Slide from left to right
+          const begin = Offset(-1.0, 0.0);
           const end = Offset.zero;
           const curve = Curves.easeInOut;
 
@@ -124,68 +113,62 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Determine screen width
     final screenWidth = MediaQuery.of(context).size.width;
-
-    // Apply different padding and container width based on screen size
-    double containerWidth = screenWidth < 600
-        ? screenWidth * 0.9
-        : 400; // Mobile gets 90% width, web gets 400px width
+    double containerWidth = screenWidth < 600 ? screenWidth * 0.9 : 400;
 
     return Scaffold(
-      backgroundColor: Colors.red, // Set background color to red
+      backgroundColor: Colors.red,
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Container(
-              width:
-                  containerWidth, // Adjust the width based on the screen size
+              width: containerWidth,
               padding: const EdgeInsets.all(24.0),
               decoration: BoxDecoration(
-                color: Colors.white, // Container color set to white
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(12.0),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.3),
                     spreadRadius: 5,
                     blurRadius: 10,
-                    offset: const Offset(0, 3), // Changes position of shadow
+                    offset: const Offset(0, 3),
                   ),
                 ],
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  // Logo or icon (You can replace with an Image.asset)
                   Icon(
                     Icons.account_circle,
-                    size:
-                        screenWidth < 600 ? 80 : 100, // Smaller icon on mobile
+                    size: screenWidth < 600 ? 80 : 100,
                     color: Colors.grey[800],
                   ),
                   const SizedBox(height: 16),
-
-                  // Welcome Text
                   Text(
                     'Create Account',
                     style: TextStyle(
-                      fontSize: screenWidth < 600
-                          ? 24
-                          : 28, // Smaller text for mobile
+                      fontSize: screenWidth < 600 ? 24 : 28,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-
                   const SizedBox(height: 16),
 
                   // Email Field
                   TextField(
                     controller: _emailController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: 'Email',
-                      border: OutlineInputBorder(),
-                      prefixIcon: Icon(Icons.email),
+                      labelStyle: const TextStyle(color: Colors.red),
+                      border: const OutlineInputBorder(),
+                      prefixIcon: const Icon(Icons.email, color: Colors.red),
+                      enabledBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
+                      focusedBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -193,10 +176,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   // Contact Number Field
                   TextField(
                     controller: _contactNumberController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: 'Contact Number',
-                      border: OutlineInputBorder(),
-                      prefixIcon: Icon(Icons.phone),
+                      labelStyle: const TextStyle(color: Colors.red),
+                      border: const OutlineInputBorder(),
+                      prefixIcon: const Icon(Icons.phone, color: Colors.red),
+                      enabledBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
+                      focusedBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
                     ),
                     keyboardType: TextInputType.phone,
                   ),
@@ -211,9 +201,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         child: Text(type),
                       );
                     }).toList(),
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: 'User Type',
-                      border: OutlineInputBorder(),
+                      labelStyle: const TextStyle(color: Colors.red),
+                      border: const OutlineInputBorder(),
+                      enabledBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
+                      focusedBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
                     ),
                     onChanged: (String? newValue) {
                       setState(() {
@@ -228,13 +225,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     controller: _passwordController,
                     decoration: InputDecoration(
                       labelText: 'Password',
+                      labelStyle: const TextStyle(color: Colors.red),
                       border: const OutlineInputBorder(),
-                      prefixIcon: const Icon(Icons.lock),
+                      prefixIcon: const Icon(Icons.lock, color: Colors.red),
                       suffixIcon: IconButton(
                         icon: Icon(
                           _isPasswordVisible
                               ? Icons.visibility
                               : Icons.visibility_off,
+                          color: Colors.red,
                         ),
                         onPressed: () {
                           setState(() {
@@ -242,10 +241,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           });
                         },
                       ),
+                      enabledBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
+                      focusedBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
                     ),
                     obscureText: !_isPasswordVisible,
                   ),
-
                   const SizedBox(height: 16),
 
                   // Confirm Password Field
@@ -253,13 +257,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     controller: _confirmPasswordController,
                     decoration: InputDecoration(
                       labelText: 'Confirm Password',
+                      labelStyle: const TextStyle(color: Colors.red),
                       border: const OutlineInputBorder(),
-                      prefixIcon: const Icon(Icons.lock),
+                      prefixIcon: const Icon(Icons.lock, color: Colors.red),
                       suffixIcon: IconButton(
                         icon: Icon(
                           _isConfirmPasswordVisible
                               ? Icons.visibility
                               : Icons.visibility_off,
+                          color: Colors.red,
                         ),
                         onPressed: () {
                           setState(() {
@@ -268,13 +274,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           });
                         },
                       ),
+                      enabledBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
+                      focusedBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
                     ),
                     obscureText: !_isConfirmPasswordVisible,
                   ),
-
                   const SizedBox(height: 20),
 
-                  // Error Message Display (if any)
+                  // Error Message Display
                   if (_errorMessage != null)
                     Padding(
                       padding: const EdgeInsets.only(bottom: 12),
@@ -284,17 +295,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
 
-                  // Gradient Button for Register
+                  // Register Button
                   Container(
                     width: double.infinity,
                     height: 50,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(25),
                       gradient: const LinearGradient(
-                        colors: [
-                          Color(0xFFEF233C),
-                          Color(0xFFD90429)
-                        ], // Red Gradient
+                        colors: [Color(0xFFEF233C), Color(0xFFD90429)],
                       ),
                     ),
                     child: ElevatedButton(
@@ -305,14 +313,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           borderRadius: BorderRadius.circular(25),
                         ),
                       ),
-                      onPressed: _register, // Call the register function
+                      onPressed: _register,
                       child: const Text(
                         'REGISTER',
                         style: TextStyle(fontSize: 18, color: Colors.white),
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 24),
 
                   // Back to Login Link
@@ -322,8 +329,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       const Text("Already have an account?"),
                       const SizedBox(width: 5),
                       GestureDetector(
-                        onTap:
-                            _navigateToLogin, // Call the custom transition function
+                        onTap: _navigateToLogin,
                         child: const Text(
                           'Login',
                           style: TextStyle(

@@ -243,6 +243,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isWeb = MediaQuery.of(context).size.width > 600;
+
     if (_isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -425,24 +427,25 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
             const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () => _logout(context),
-              style: ElevatedButton.styleFrom(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+            if (!isWeb) // Show logout button only if not on web
+              ElevatedButton(
+                onPressed: () => _logout(context),
+                style: ElevatedButton.styleFrom(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  backgroundColor: Colors.red[900],
                 ),
-                backgroundColor: Colors.red[900],
-              ),
-              child: const Text(
-                'Logout',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.white,
+                child: const Text(
+                  'Logout',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                  ),
                 ),
               ),
-            ),
           ],
         ),
       ),

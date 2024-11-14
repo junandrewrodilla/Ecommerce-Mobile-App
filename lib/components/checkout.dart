@@ -171,7 +171,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
     for (final detail in checkoutDetails) {
       message += "$detail\n";
     }
-    message += "Process Before: ${DateFormat.yMMMMd().format(_selectedDate!)}";
+    message += "Expected on: ${DateFormat.yMMMMd().format(_selectedDate!)}";
 
     final response = await http.post(
       Uri.parse("https://api.semaphore.co/api/v4/messages"),

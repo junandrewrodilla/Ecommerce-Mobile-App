@@ -208,6 +208,10 @@ class _UserManagementPageState extends State<UserManagementPage> {
   }
 
   void _showImageOverlay(String imageUrl, String title) {
+    double doubleTapZoomScale = 1.0; // Track current scale
+    final double maxZoomScale = 4.0;
+    final double zoomStep = 1.5; // Amount to zoom with each double-tap
+
     showDialog(
       context: context,
       builder: (context) {
@@ -241,12 +245,32 @@ class _UserManagementPageState extends State<UserManagementPage> {
                         ),
                         const SizedBox(height: 16),
                         Center(
-                          child: Image.network(
-                            imageUrl,
-                            fit: BoxFit.contain,
-                            errorBuilder: (context, error, stackTrace) =>
-                                const Text('Failed to load image',
-                                    style: TextStyle(color: Colors.white)),
+                          child: GestureDetector(
+                            onDoubleTap: () {
+                              setState(() {
+                                if (doubleTapZoomScale < maxZoomScale) {
+                                  doubleTapZoomScale *= zoomStep;
+                                } else {
+                                  doubleTapZoomScale = 1.0; // Reset zoom
+                                }
+                              });
+                            },
+                            child: InteractiveViewer(
+                              minScale: 1.0,
+                              maxScale: maxZoomScale,
+                              scaleEnabled: true,
+                              child: Transform.scale(
+                                scale: doubleTapZoomScale,
+                                child: Image.network(
+                                  imageUrl,
+                                  fit: BoxFit.contain,
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      const Text('Failed to load image',
+                                          style:
+                                              TextStyle(color: Colors.white)),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ],

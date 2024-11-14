@@ -5,8 +5,12 @@ import 'package:capstone/components/cart.dart';
 import 'package:capstone/components/shop.dart';
 import 'package:capstone/components/orders_buyer.dart';
 import 'package:capstone/home/buyer_page.dart';
+
+import '../home/admin_page.dart';
+import '../home/seller_page.dart';
+import '../login/login.dart';
 import 'profile_page.dart';
-import 'user_management.dart';
+import 'user_management.dart'; // Import UserManagement page
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -83,6 +87,15 @@ class _NavbarState extends State<Navbar> {
     });
   }
 
+  Future<void> _logout() async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(
+          builder: (context) => LoginScreen()), // Replace with your login page
+      (Route<dynamic> route) => false,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isWeb = MediaQuery.of(context).size.width > 600;
@@ -115,10 +128,16 @@ class _NavbarState extends State<Navbar> {
                     if (isLargeScreen) ...[
                       _buildNavButton(context, 'Home'),
                       const SizedBox(width: 20),
-                      _buildNavButton(context, 'Shop'),
-                      const SizedBox(width: 20),
+                      if (widget.userType != 'Admin') ...[
+                        _buildNavButton(context, 'Shop'),
+                        const SizedBox(width: 20),
+                      ],
                       if (widget.userType == 'Buyer') ...[
                         _buildNavButton(context, 'Orders'),
+                        const SizedBox(width: 20),
+                      ],
+                      if (widget.userType == 'Admin') ...[
+                        _buildNavButton(context, 'Users'),
                         const SizedBox(width: 20),
                       ],
                       _buildProfileButton(context, widget.userId),
@@ -129,8 +148,12 @@ class _NavbarState extends State<Navbar> {
                       if (isWeb && widget.userType == 'Buyer')
                         _buildChatIconButton(),
                     ],
-                    // Cart Icon always at the right most
-                    _buildCartIconButton(context),
+                    if (widget.userType != 'Admin')
+                      _buildCartIconButton(context),
+                    if (isWeb) ...[
+                      const SizedBox(width: 20),
+                      _buildLogoutIconButton(),
+                    ],
                   ],
                 ),
               ),
@@ -142,6 +165,7 @@ class _NavbarState extends State<Navbar> {
   }
 
   Widget _buildCartIconButton(BuildContext context) {
+    // Only show the cart icon for non-admin users
     return FutureBuilder<int>(
       future: _fetchCartItemCount(),
       builder: (context, snapshot) {
@@ -202,6 +226,13 @@ class _NavbarState extends State<Navbar> {
     );
   }
 
+  Widget _buildLogoutIconButton() {
+    return IconButton(
+      icon: const Icon(Icons.logout, color: Colors.white),
+      onPressed: _logout,
+    );
+  }
+
   Future<int> _fetchCartItemCount() async {
     try {
       final user = FirebaseAuth.instance.currentUser;
@@ -235,7 +266,9 @@ class _NavbarState extends State<Navbar> {
         return Dialog(
           backgroundColor: Colors.transparent,
           child: NotificationsDialog(
-              userId: widget.userId, userType: widget.userType),
+            userId: widget.userId,
+            userType: widget.userType,
+          ),
         );
       },
     );
@@ -288,22 +321,31 @@ class _NavbarState extends State<Navbar> {
   Widget _buildNavButton(BuildContext context, String label) {
     return TextButton(
       onPressed: () {
-        switch (label) {
-          case 'Home':
+        if (label == 'Home') {
+          // Navigate based on userType
+          if (widget.userType == 'Admin') {
+            _navigateWithFadeTransition(context, AdminHomePage());
+          } else if (widget.userType == 'Seller') {
+            _navigateWithFadeTransition(context, SellerHomePage());
+          } else if (widget.userType == 'Buyer') {
             _navigateWithFadeTransition(context, BuyerHomePage());
-            break;
-          case 'Shop':
-            _navigateWithFadeTransition(
-              context,
-              ShopPage(userType: widget.userType, userId: widget.userId),
-            );
-            break;
-          case 'Orders':
-            _navigateWithFadeTransition(
-              context,
-              OrderProductsPage(userId: widget.userId),
-            );
-            break;
+          }
+        } else if (label == 'Shop' && widget.userType != 'Admin') {
+          _navigateWithFadeTransition(
+            context,
+            ShopPage(userType: widget.userType, userId: widget.userId),
+          );
+        } else if (label == 'Orders') {
+          _navigateWithFadeTransition(
+            context,
+            OrderProductsPage(userId: widget.userId),
+          );
+        } else if (label == 'Users' && widget.userType == 'Admin') {
+          _navigateWithFadeTransition(
+            context,
+            UserManagementPage(
+                userId: widget.userId, userType: widget.userType),
+          ); // Navigate to UserManagement page for Admins
         }
       },
       style: TextButton.styleFrom(

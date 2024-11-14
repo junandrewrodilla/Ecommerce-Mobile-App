@@ -437,7 +437,7 @@ class _ProductDetailsDialogState extends State<ProductDetailsDialog> {
       Uri.parse("https://api.semaphore.co/api/v4/messages"),
       headers: {"Content-Type": "application/x-www-form-urlencoded"},
       body: {
-        'apikey': '95ba3c534aa1a8b3dd67a83685b93d35',
+        'apikey': '',
         'number': sellerNumber,
         'message': message,
         'sendername': 'Handimerce'
