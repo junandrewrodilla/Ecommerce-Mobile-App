@@ -47,7 +47,7 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
     super.initState();
     _initializeVideoPlayer();
   }
- 
+
   @override
   void dispose() {
     _videoController?.dispose();
@@ -435,6 +435,8 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
   }
 
   Widget _buildProductCard(Map product, bool isWeb) {
+    double deviceWidth = MediaQuery.of(context).size.width;
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -462,38 +464,49 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
           children: [
+            // Product image
             ClipRRect(
               borderRadius: BorderRadius.circular(isWeb ? 8 : 12),
               child: Image.network(
                 product['profileImageUrl'],
-                height: isWeb ? 300 : 150,
+                height: isWeb
+                    ? 150
+                    : deviceWidth < 350
+                        ? 100
+                        : 130,
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
             ),
             const SizedBox(height: 8),
-            Text(
-              'By ${product['seller_name'] ?? 'Unknown Seller'}',
-              style: TextStyle(
-                fontSize: isWeb ? 12 : 10,
-                fontWeight: FontWeight.bold,
-                color: Colors.grey,
+            // Seller name
+            Flexible(
+              child: Text(
+                'By ${product['seller_name'] ?? 'Unknown Seller'}',
+                style: TextStyle(
+                  fontSize: isWeb ? 12 : 10,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: 4),
-            Text(
-              product['name'],
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: isWeb ? 14 : 12,
+            // Product name
+            Flexible(
+              child: Text(
+                product['name'],
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: isWeb ? 14 : 12,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
             ),
+            // Product price
             Text(
               '₱${product['price']}',
               style: TextStyle(

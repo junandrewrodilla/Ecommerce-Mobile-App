@@ -28,37 +28,53 @@ class Navbar extends StatefulWidget {
 }
 
 class _NavbarState extends State<Navbar> {
+  final DatabaseReference _checkoutsRef =
+      FirebaseDatabase.instance.ref('checkouts'); // Define the reference
+
   int notificationCount = 0;
   int chatUnreadCount = 0;
 
   @override
   void initState() {
     super.initState();
-    if (widget.userType == 'Buyer') {
+    if (widget.userType == 'Buyer' || widget.userType == 'Seller') {
       _fetchNotificationCount();
       _fetchUnreadChatCount();
     }
   }
 
-  Future<void> _fetchNotificationCount() async {
-    final DatabaseReference checkoutsRef =
-        FirebaseDatabase.instance.ref('checkouts');
-    final DataSnapshot snapshot = await checkoutsRef.get();
-    int unreadCount = 0;
+  void _fetchNotificationCount() {
+    _checkoutsRef.onValue.listen((event) {
+      int unreadCount = 0;
 
-    if (snapshot.exists) {
-      for (var child in snapshot.children) {
-        final data = child.value as Map<dynamic, dynamic>?;
-        if (data != null &&
-            data['status'] == 'Processed' &&
-            (data['notification_read_buyers'] != true)) {
-          unreadCount++;
+      if (event.snapshot.exists) {
+        for (var child in event.snapshot.children) {
+          final data = child.value as Map<dynamic, dynamic>?;
+
+          if (widget.userType == 'Seller') {
+            // Count notifications for sellers if `seller_id` matches the logged-in user ID
+            if (data != null &&
+                data['seller_id'] == widget.userId && // Match seller ID
+                data['notification_read'] != true) {
+              // Only unread notifications
+              unreadCount++;
+            }
+          } else if (widget.userType == 'Buyer') {
+            // Count notifications for buyers if `user_id` matches the logged-in user ID
+            if (data != null &&
+                data['user_id'] == widget.userId && // Match user ID for buyer
+                data['status'] == 'Processed' && // Processed status only
+                data['notification_read_buyers'] != true) {
+              // Only unread notifications
+              unreadCount++;
+            }
+          }
         }
       }
-    }
 
-    setState(() {
-      notificationCount = unreadCount;
+      setState(() {
+        notificationCount = unreadCount;
+      });
     });
   }
 
@@ -165,7 +181,6 @@ class _NavbarState extends State<Navbar> {
   }
 
   Widget _buildCartIconButton(BuildContext context) {
-    // Only show the cart icon for non-admin users
     return FutureBuilder<int>(
       future: _fetchCartItemCount(),
       builder: (context, snapshot) {
@@ -322,7 +337,6 @@ class _NavbarState extends State<Navbar> {
     return TextButton(
       onPressed: () {
         if (label == 'Home') {
-          // Navigate based on userType
           if (widget.userType == 'Admin') {
             _navigateWithFadeTransition(context, AdminHomePage());
           } else if (widget.userType == 'Seller') {
@@ -345,7 +359,7 @@ class _NavbarState extends State<Navbar> {
             context,
             UserManagementPage(
                 userId: widget.userId, userType: widget.userType),
-          ); // Navigate to UserManagement page for Admins
+          );
         }
       },
       style: TextButton.styleFrom(

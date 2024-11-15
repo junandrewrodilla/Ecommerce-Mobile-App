@@ -107,184 +107,6 @@ class _UserManagementPageState extends State<UserManagementPage> {
     }
   }
 
-  void _showUserDetails(User user) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Row(
-            children: [
-              const Icon(Icons.person, color: Colors.blue),
-              const SizedBox(width: 8),
-              Text('${user.firstName} ${user.lastName}',
-                  style: const TextStyle(fontWeight: FontWeight.bold)),
-            ],
-          ),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(children: [
-                  const Icon(Icons.badge, color: Colors.blue),
-                  const SizedBox(width: 8),
-                  Text('User Type: ${user.userType}',
-                      style: const TextStyle(fontSize: 16)),
-                ]),
-                const SizedBox(height: 10),
-                Row(children: [
-                  const Icon(Icons.email, color: Colors.blue),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text('Email: ${user.email}',
-                        style: const TextStyle(fontSize: 16)),
-                  ),
-                ]),
-                const SizedBox(height: 10),
-                Row(children: [
-                  const Icon(Icons.location_on, color: Colors.blue),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text('Address: ${user.address}',
-                        style: const TextStyle(fontSize: 16)),
-                  ),
-                ]),
-                const Divider(height: 20, thickness: 1),
-                const Text('Valid ID:',
-                    style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                const SizedBox(height: 8),
-                user.validIdUrl.isNotEmpty
-                    ? GestureDetector(
-                        onTap: () =>
-                            _showImageOverlay(user.validIdUrl, "Valid ID"),
-                        child: Image.network(user.validIdUrl,
-                            height: 150,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) =>
-                                const Text('Failed to load Valid ID image')),
-                      )
-                    : const Column(children: [
-                        Icon(Icons.image_not_supported,
-                            color: Colors.grey, size: 50),
-                        Text('No Valid ID image available',
-                            style: TextStyle(color: Colors.grey))
-                      ]),
-                if (user.userType != 'Buyer') ...[
-                  const Divider(height: 20, thickness: 1),
-                  const Text('Certificate:',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 8),
-                  user.certificateUrl.isNotEmpty
-                      ? GestureDetector(
-                          onTap: () => _showImageOverlay(
-                              user.certificateUrl, "Certificate"),
-                          child: Image.network(user.certificateUrl,
-                              height: 150,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) =>
-                                  const Text(
-                                      'Failed to load Certificate image')),
-                        )
-                      : const Column(children: [
-                          Icon(Icons.image_not_supported,
-                              color: Colors.grey, size: 50),
-                          Text('No Certificate image available',
-                              style: TextStyle(color: Colors.grey))
-                        ]),
-                ],
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Close', style: TextStyle(color: Colors.red)),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _showImageOverlay(String imageUrl, String title) {
-    double doubleTapZoomScale = 1.0; // Track current scale
-    final double maxZoomScale = 4.0;
-    final double zoomStep = 1.5; // Amount to zoom with each double-tap
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return Dialog(
-          backgroundColor: Colors.black.withOpacity(0.8),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Stack(
-                children: [
-                  Positioned(
-                    top: 8,
-                    right: 8,
-                    child: IconButton(
-                      icon: const Icon(Icons.close, color: Colors.white),
-                      onPressed: () => Navigator.of(context).pop(),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 16),
-                    child: Column(
-                      children: [
-                        Text(
-                          title,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        Center(
-                          child: GestureDetector(
-                            onDoubleTap: () {
-                              setState(() {
-                                if (doubleTapZoomScale < maxZoomScale) {
-                                  doubleTapZoomScale *= zoomStep;
-                                } else {
-                                  doubleTapZoomScale = 1.0; // Reset zoom
-                                }
-                              });
-                            },
-                            child: InteractiveViewer(
-                              minScale: 1.0,
-                              maxScale: maxZoomScale,
-                              scaleEnabled: true,
-                              child: Transform.scale(
-                                scale: doubleTapZoomScale,
-                                child: Image.network(
-                                  imageUrl,
-                                  fit: BoxFit.contain,
-                                  errorBuilder: (context, error, stackTrace) =>
-                                      const Text('Failed to load image',
-                                          style:
-                                              TextStyle(color: Colors.white)),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
   void _filterUsers(String filter) {
     setState(() {
       _selectedFilter = filter;
@@ -338,6 +160,9 @@ class _UserManagementPageState extends State<UserManagementPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Determine whether the app is running on a web/desktop layout
+    bool isWeb = MediaQuery.of(context).size.width > 600;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('User Management'),
@@ -508,11 +333,182 @@ class _UserManagementPageState extends State<UserManagementPage> {
                 ),
               ],
             ),
-      bottomNavigationBar: BottomNavBar(
-        userId: widget.userId,
-        userType: widget.userType,
-        selectedIndex: 1, // Adjust this index if necessary
-      ),
+      bottomNavigationBar: isWeb
+          ? null
+          : BottomNavBar(
+              userId: widget.userId,
+              userType: widget.userType,
+              selectedIndex: 1, // Adjust this index if necessary
+            ),
+    );
+  }
+
+  void _showUserDetails(User user) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Row(
+            children: [
+              const Icon(Icons.person, color: Colors.blue),
+              const SizedBox(width: 8),
+              Text('${user.firstName} ${user.lastName}',
+                  style: const TextStyle(fontWeight: FontWeight.bold)),
+            ],
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(children: [
+                  const Icon(Icons.badge, color: Colors.blue),
+                  const SizedBox(width: 8),
+                  Text('User Type: ${user.userType}',
+                      style: const TextStyle(fontSize: 16)),
+                ]),
+                const SizedBox(height: 10),
+                Row(children: [
+                  const Icon(Icons.email, color: Colors.blue),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text('Email: ${user.email}',
+                        style: const TextStyle(fontSize: 16)),
+                  ),
+                ]),
+                const SizedBox(height: 10),
+                Row(children: [
+                  const Icon(Icons.location_on, color: Colors.blue),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text('Address: ${user.address}',
+                        style: const TextStyle(fontSize: 16)),
+                  ),
+                ]),
+                const Divider(height: 20, thickness: 1),
+                const Text('Valid ID:',
+                    style:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 8),
+                user.validIdUrl.isNotEmpty
+                    ? GestureDetector(
+                        onTap: () =>
+                            _showImageOverlay(user.validIdUrl, "Valid ID"),
+                        child: Image.network(user.validIdUrl,
+                            height: 150,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) =>
+                                const Text('Failed to load Valid ID image')),
+                      )
+                    : const Column(children: [
+                        Icon(Icons.image_not_supported,
+                            color: Colors.grey, size: 50),
+                        Text('No Valid ID image available',
+                            style: TextStyle(color: Colors.grey))
+                      ]),
+                if (user.userType != 'Buyer') ...[
+                  const Divider(height: 20, thickness: 1),
+                  const Text('Certificate:',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 8),
+                  user.certificateUrl.isNotEmpty
+                      ? GestureDetector(
+                          onTap: () => _showImageOverlay(
+                              user.certificateUrl, "Certificate"),
+                          child: Image.network(user.certificateUrl,
+                              height: 150,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  const Text(
+                                      'Failed to load Certificate image')),
+                        )
+                      : const Column(children: [
+                          Icon(Icons.image_not_supported,
+                              color: Colors.grey, size: 50),
+                          Text('No Certificate image available',
+                              style: TextStyle(color: Colors.grey))
+                        ]),
+                ],
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Close', style: TextStyle(color: Colors.red)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showImageOverlay(String imageUrl, String title) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          backgroundColor: Colors.black.withOpacity(0.8),
+          insetPadding: const EdgeInsets.all(16),
+          child: RawScrollbar(
+            thumbColor: Colors.white, // White scrollbar
+            radius: const Radius.circular(8), // Rounded scrollbar edges
+            thickness: 6, // Thickness of the scrollbar
+            isAlwaysShown: true, // Always show the scrollbar
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Stack(
+                    children: [
+                      Positioned(
+                        top: 8,
+                        right: 8,
+                        child: IconButton(
+                          icon: const Icon(Icons.close, color: Colors.white),
+                          onPressed: () => Navigator.of(context).pop(),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 16),
+                        child: Column(
+                          children: [
+                            Text(
+                              title,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            Center(
+                              child: InteractiveViewer(
+                                minScale: 1.0,
+                                maxScale: 4.0,
+                                child: Image.network(
+                                  imageUrl,
+                                  fit: BoxFit.contain,
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      const Text(
+                                    'Failed to load image',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
