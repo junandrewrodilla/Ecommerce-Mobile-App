@@ -292,7 +292,7 @@ class _LoginScreenState extends State<LoginScreen> {
       PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 600),
         pageBuilder: (context, animation, secondaryAnimation) =>
-            RegisterScreen(),
+            const RegisterScreen(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           const begin = Offset(1.0, 0.0); // From right to left
           const end = Offset.zero;

@@ -11,7 +11,8 @@ class AddProductDialog extends StatefulWidget {
   final FirebaseStorage storage;
   final String sellerName;
 
-  AddProductDialog({
+  const AddProductDialog({
+    super.key,
     required this.userId,
     required this.databaseRef,
     required this.storage,
@@ -24,7 +25,7 @@ class AddProductDialog extends StatefulWidget {
 
 class _AddProductDialogState extends State<AddProductDialog> {
   File? _mainImageFile;
-  List<File> _additionalImageFiles = [];
+  final List<File> _additionalImageFiles = [];
   final List<String> _categories = [
     'Bags',
     'Necklaces',
@@ -71,7 +72,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
   Future<File?> compressImage(File file,
       {int maxHeight = 1024, int maxWidth = 1024, int quality = 80}) async {
     final filePath = file.absolute.path;
-    final lastIndex = filePath.lastIndexOf(new RegExp(r'.jp'));
+    final lastIndex = filePath.lastIndexOf(RegExp(r'.jp'));
     final splitted = filePath.substring(0, lastIndex);
     final outPath = "${splitted}_out${filePath.substring(lastIndex)}";
 
@@ -153,11 +154,12 @@ class _AddProductDialogState extends State<AddProductDialog> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Missing Information'),
-            content: Text('Please fill all the fields and pick a main image.'),
+            title: const Text('Missing Information'),
+            content:
+                const Text('Please fill all the fields and pick a main image.'),
             actions: <Widget>[
               TextButton(
-                child: Text('OK'),
+                child: const Text('OK'),
                 onPressed: () {
                   Navigator.of(context).pop(); // Close the dialog
                 },
@@ -178,7 +180,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return Center(
+        return const Center(
           child: Dialog(
             backgroundColor: Colors.transparent,
             child: Column(

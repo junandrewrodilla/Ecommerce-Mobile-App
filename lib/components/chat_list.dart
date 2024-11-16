@@ -11,7 +11,7 @@ class ChatListPage extends StatefulWidget {
   final String userId;
   final String userType;
 
-  ChatListPage({required this.userId, required this.userType});
+  const ChatListPage({super.key, required this.userId, required this.userType});
 
   @override
   _ChatListPageState createState() => _ChatListPageState();
@@ -20,7 +20,7 @@ class ChatListPage extends StatefulWidget {
 class _ChatListPageState extends State<ChatListPage> {
   final _database = FirebaseDatabase.instance.ref();
   List<Map<String, dynamic>> _chatList = [];
-  Map<String, String> _userNames = {}; // Cache for user names by userId
+  final Map<String, String> _userNames = {}; // Cache for user names by userId
   bool _isApproved = true; // Track approval status
   late DatabaseReference _chatsRef;
   late StreamSubscription<DatabaseEvent> _chatSubscription;

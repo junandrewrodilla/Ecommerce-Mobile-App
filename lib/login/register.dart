@@ -78,7 +78,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => LoginScreen()),
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
         );
       }
     } catch (e) {
@@ -92,7 +92,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     Navigator.of(context).pushReplacement(
       PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 600),
-        pageBuilder: (context, animation, secondaryAnimation) => LoginScreen(),
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const LoginScreen(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           const begin = Offset(-1.0, 0.0);
           const end = Offset.zero;
@@ -158,15 +159,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   // Email Field
                   TextField(
                     controller: _emailController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Email',
-                      labelStyle: const TextStyle(color: Colors.red),
-                      border: const OutlineInputBorder(),
-                      prefixIcon: const Icon(Icons.email, color: Colors.red),
-                      enabledBorder: const OutlineInputBorder(
+                      labelStyle: TextStyle(color: Colors.red),
+                      border: OutlineInputBorder(),
+                      prefixIcon: Icon(Icons.email, color: Colors.red),
+                      enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.red),
                       ),
-                      focusedBorder: const OutlineInputBorder(
+                      focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.red),
                       ),
                     ),
@@ -176,15 +177,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   // Contact Number Field
                   TextField(
                     controller: _contactNumberController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Contact Number',
-                      labelStyle: const TextStyle(color: Colors.red),
-                      border: const OutlineInputBorder(),
-                      prefixIcon: const Icon(Icons.phone, color: Colors.red),
-                      enabledBorder: const OutlineInputBorder(
+                      labelStyle: TextStyle(color: Colors.red),
+                      border: OutlineInputBorder(),
+                      prefixIcon: Icon(Icons.phone, color: Colors.red),
+                      enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.red),
                       ),
-                      focusedBorder: const OutlineInputBorder(
+                      focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.red),
                       ),
                     ),
@@ -201,14 +202,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         child: Text(type),
                       );
                     }).toList(),
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'User Type',
-                      labelStyle: const TextStyle(color: Colors.red),
-                      border: const OutlineInputBorder(),
-                      enabledBorder: const OutlineInputBorder(
+                      labelStyle: TextStyle(color: Colors.red),
+                      border: OutlineInputBorder(),
+                      enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.red),
                       ),
-                      focusedBorder: const OutlineInputBorder(
+                      focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.red),
                       ),
                     ),

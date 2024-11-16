@@ -6,6 +6,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:capstone/components/navbar.dart';
 
 class SellerHomePage extends StatefulWidget {
+  const SellerHomePage({super.key});
+
   @override
   _SellerHomePageState createState() => _SellerHomePageState();
 }

@@ -99,7 +99,7 @@ class _ProfilePageState extends State<ProfilePage> {
       await _googleSignIn.signOut(); // Sign out from Google as well
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => LoginScreen()),
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
       );
     } catch (e) {
       debugPrint("Error logging out: $e");

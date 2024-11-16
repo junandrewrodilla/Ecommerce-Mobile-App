@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 class HomeScreen extends StatelessWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  HomeScreen({super.key});
+
   // Function to handle logout
   void _logout(BuildContext context) async {
     await _auth.signOut();

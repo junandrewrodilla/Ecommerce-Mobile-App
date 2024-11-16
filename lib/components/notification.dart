@@ -5,7 +5,8 @@ class NotificationsDialog extends StatefulWidget {
   final String userId;
   final String userType;
 
-  NotificationsDialog({
+  const NotificationsDialog({
+    super.key,
     required this.userId,
     required this.userType,
   });
@@ -133,12 +134,12 @@ class _NotificationsDialogState extends State<NotificationsDialog> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
+                    const Row(
                       children: [
-                        const Icon(Icons.notifications,
+                        Icon(Icons.notifications,
                             color: Colors.white, size: 28),
-                        const SizedBox(width: 8),
-                        const Text(
+                        SizedBox(width: 8),
+                        Text(
                           'Notifications',
                           style: TextStyle(
                             fontSize: 22,
@@ -193,7 +194,6 @@ class _NotificationsDialogState extends State<NotificationsDialog> {
                     await _markAllNotificationsAsRead();
                     Navigator.of(context).pop();
                   },
-                  child: const Text('Close'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red[700],
                     shape: RoundedRectangleBorder(
@@ -202,6 +202,7 @@ class _NotificationsDialogState extends State<NotificationsDialog> {
                     padding: const EdgeInsets.symmetric(
                         vertical: 12, horizontal: 24),
                   ),
+                  child: const Text('Close'),
                 ),
               ),
               const SizedBox(height: 16),

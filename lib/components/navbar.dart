@@ -18,7 +18,8 @@ class Navbar extends StatefulWidget {
   final String userId;
   final String userType;
 
-  Navbar({
+  const Navbar({
+    super.key,
     required this.userId,
     required this.userType,
   });
@@ -107,7 +108,8 @@ class _NavbarState extends State<Navbar> {
     await FirebaseAuth.instance.signOut();
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
-          builder: (context) => LoginScreen()), // Replace with your login page
+          builder: (context) =>
+              const LoginScreen()), // Replace with your login page
       (Route<dynamic> route) => false,
     );
   }
@@ -125,9 +127,9 @@ class _NavbarState extends State<Navbar> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: const Text(
+              const Padding(
+                padding: EdgeInsets.only(top: 8.0),
+                child: Text(
                   'HANDIMERCE',
                   style: TextStyle(
                     color: Colors.white,
@@ -189,7 +191,7 @@ class _NavbarState extends State<Navbar> {
           alignment: AlignmentDirectional.topEnd,
           offset: const Offset(-5, 5),
           isLabelVisible: itemCount > 0,
-          backgroundColor: Color.fromARGB(255, 107, 0, 0),
+          backgroundColor: const Color.fromARGB(255, 107, 0, 0),
           label: Text(
             '$itemCount',
             style: const TextStyle(color: Colors.white, fontSize: 12),

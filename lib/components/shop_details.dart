@@ -7,7 +7,7 @@ import 'package:badges/badges.dart' as badges;
 class ProductDetailsPage extends StatefulWidget {
   final Map<String, dynamic> product;
 
-  ProductDetailsPage({required this.product});
+  const ProductDetailsPage({super.key, required this.product});
 
   @override
   _ProductDetailsPageState createState() => _ProductDetailsPageState();
@@ -26,7 +26,14 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.product['name']),
+        title: Text(
+          widget.product['name'],
+          style: const TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 25,
+            color: Colors.white,
+          ),
+        ),
         centerTitle: true,
         elevation: 0,
         backgroundColor: Colors.red,
@@ -47,7 +54,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   ),
                 ),
                 child: IconButton(
-                  icon: const Icon(Icons.shopping_cart),
+                  icon: const Icon(
+                    Icons.shopping_cart,
+                    color: Colors.white,
+                  ),
                   onPressed: () {
                     Navigator.push(
                       context,

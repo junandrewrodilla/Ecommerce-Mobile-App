@@ -41,11 +41,11 @@ dependencies:
   firebase_storage: ^11.6.0
   fl_chart: ^0.40.0
   intl: ^0.19.0
-  image_picker: ^1.0.7
+  image_picker: ^1.1.2
   cloud_firestore: ^4.14.0
   carousel_slider: ^5.0.0
   dots_indicator: ^3.0.0
-  image_picker_for_web: ^3.0.2
+  image_picker_for_web: ^3.0.6
   flutter_image_compress: ^2.3.0
   path_provider: ^2.1.2
   smooth_page_indicator: ^1.2.0+3
@@ -104,6 +104,7 @@ flutter:
     - img/video.mp4
     - img/google logo.png
     - img/screen.png
+    
   
 
   #   - images/a_dot_ham.jpeg

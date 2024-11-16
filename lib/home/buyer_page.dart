@@ -10,6 +10,8 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:video_player/video_player.dart';
 
 class BuyerHomePage extends StatefulWidget {
+  const BuyerHomePage({super.key});
+
   @override
   _BuyerHomePageState createState() => _BuyerHomePageState();
 }
@@ -129,7 +131,7 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
                 top: 30,
                 right: 30,
                 child: IconButton(
-                  icon: Icon(Icons.close, color: Colors.white, size: 30),
+                  icon: const Icon(Icons.close, color: Colors.white, size: 30),
                   onPressed: () {
                     Navigator.of(context).pop();
                     if (isVideo) {
@@ -139,7 +141,7 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
                 ),
               ),
               if (isVideo && !_isVideoPlaying)
-                Center(
+                const Center(
                   child: Icon(
                     Icons.play_circle_fill,
                     color: Colors.white,
@@ -157,7 +159,7 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
     await _auth.signOut();
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => LoginScreen()),
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
     );
   }
 
@@ -166,7 +168,7 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
     User? user = _auth.currentUser;
 
     if (user == null) {
-      return LoginScreen();
+      return const LoginScreen();
     }
 
     String userId = user.uid;
@@ -305,9 +307,9 @@ class _BuyerHomePageState extends State<BuyerHomePage> {
         Padding(
           padding: EdgeInsets.only(
               left: isWeb ? 0.0 : 8.0), // Center on web, left align on mobile
-          child: Text(
+          child: const Text(
             'Categories',
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
               color: Colors.black87,

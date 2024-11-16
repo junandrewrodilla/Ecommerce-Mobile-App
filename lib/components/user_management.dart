@@ -51,7 +51,8 @@ class UserManagementPage extends StatefulWidget {
   final String userId;
   final String userType;
 
-  UserManagementPage({required this.userId, required this.userType});
+  const UserManagementPage(
+      {super.key, required this.userId, required this.userType});
 
   @override
   _UserManagementPageState createState() => _UserManagementPageState();
@@ -166,9 +167,11 @@ class _UserManagementPageState extends State<UserManagementPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('User Management'),
+        titleTextStyle: const TextStyle(
+            color: Colors.white, fontWeight: FontWeight.w600, fontSize: 20),
         backgroundColor: Colors.red[900],
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pushReplacement(
               context,
@@ -454,7 +457,7 @@ class _UserManagementPageState extends State<UserManagementPage> {
             thumbColor: Colors.white, // White scrollbar
             radius: const Radius.circular(8), // Rounded scrollbar edges
             thickness: 6, // Thickness of the scrollbar
-            isAlwaysShown: true, // Always show the scrollbar
+            thumbVisibility: true, // Always show the scrollbar
             child: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,

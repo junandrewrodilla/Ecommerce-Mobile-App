@@ -4,6 +4,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'checkout.dart'; // Import the CheckoutPage
 
 class ShoppingCartPage extends StatefulWidget {
+  const ShoppingCartPage({super.key});
+
   @override
   _ShoppingCartPageState createState() => _ShoppingCartPageState();
 }

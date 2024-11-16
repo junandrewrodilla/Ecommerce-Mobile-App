@@ -9,7 +9,7 @@ import 'product_details.dart';
 class SellerShopPage extends StatefulWidget {
   final String userId;
 
-  SellerShopPage({required this.userId});
+  const SellerShopPage({super.key, required this.userId});
 
   @override
   _SellerShopPageState createState() => _SellerShopPageState();
@@ -135,7 +135,7 @@ class _SellerShopPageState extends State<SellerShopPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
+                            SizedBox(
                               width: 150,
                               child: DropdownButtonFormField<String>(
                                 decoration: const InputDecoration(
@@ -183,7 +183,7 @@ class _SellerShopPageState extends State<SellerShopPage> {
             if (!_isApproved)
               Container(
                 color: Colors.black.withOpacity(0.6),
-                child: Center(
+                child: const Center(
                   child: Text(
                     'YOU\'RE NOT APPROVED YET',
                     style: TextStyle(
@@ -463,7 +463,8 @@ class EditProductDialog extends StatefulWidget {
   final String userId;
   final DatabaseReference databaseRef;
 
-  EditProductDialog({
+  const EditProductDialog({
+    super.key,
     required this.product,
     required this.userId,
     required this.databaseRef,

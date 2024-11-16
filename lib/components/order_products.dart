@@ -233,7 +233,7 @@ class _ProductPageState extends State<ProductPage> {
                 ],
               ),
               const SizedBox(height: 8.0),
-              Container(
+              SizedBox(
                 width: double.infinity,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -1,1 +1,72 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"ecommerce-80a72","appId":"1:13731980005:android:ccd7c334f20a3592ac2a0c","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"ecommerce-80a72","configurations":{"android":"1:13731980005:android:ccd7c334f20a3592ac2a0c","ios":"1:13731980005:ios:714350e5b3fa5dcdac2a0c","macos":"1:13731980005:ios:714350e5b3fa5dcdac2a0c","web":"1:13731980005:web:452aa7c9c1d49dffac2a0c","windows":"1:13731980005:web:452aa7c9c1d49dffac2a0c"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "ecommerce-80a72",
+          "appId": "1:13731980005:android:ccd7c334f20a3592ac2a0c",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "ecommerce-80a72",
+          "configurations": {
+            "android": "1:13731980005:android:ccd7c334f20a3592ac2a0c",
+            "ios": "1:13731980005:ios:714350e5b3fa5dcdac2a0c",
+            "macos": "1:13731980005:ios:714350e5b3fa5dcdac2a0c",
+            "web": "1:13731980005:web:452aa7c9c1d49dffac2a0c",
+            "windows": "1:13731980005:web:452aa7c9c1d49dffac2a0c"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "site": "ecommerce-80a72",
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "*/.",
+      "/node_modules/"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
+    "headers": [
+      {
+        "source": "*/.@(jpg|jpeg|gif|png|svg|webp)",
+        "headers": [
+          {
+            "key": "Access-Control-Allow-Origin",
+            "value": "*"
+          },
+          {
+            "key": "Cross-Origin-Resource-Policy",
+            "value": "cross-origin"
+          }
+        ]
+      },
+      {
+        "source": "**",
+        "headers": [
+          {
+            "key": "Access-Control-Allow-Origin",
+            "value": "*"
+          },
+          {
+            "key": "Access-Control-Allow-Methods",
+            "value": "GET, HEAD, OPTIONS"
+          },
+          {
+            "key": "Access-Control-Allow-Headers",
+            "value": "Content-Type"
+          }
+        ]
+      }
+    ]
+  }
+}

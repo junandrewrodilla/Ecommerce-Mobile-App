@@ -144,7 +144,7 @@ class EditProductModal {
                       Navigator.of(context).pop();
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.green[700],
+                      backgroundColor: Colors.green[700],
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),

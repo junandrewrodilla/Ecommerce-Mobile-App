@@ -8,14 +8,14 @@ class ShopPage extends StatefulWidget {
   final String userId;
   final String userType;
 
-  ShopPage({required this.userId, required this.userType});
+  const ShopPage({super.key, required this.userId, required this.userType});
 
   @override
   _ShopPageState createState() => _ShopPageState();
 }
 
 class _ShopPageState extends State<ShopPage> {
-  int _selectedIndex = 1;
+  final int _selectedIndex = 1;
   String _searchQuery = '';
 
   final DatabaseReference _publicProductsRef =
@@ -209,7 +209,7 @@ class _ShopPageState extends State<ShopPage> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
-                          '${_calculateDiscount(price, originalPrice!)}% off',
+                          '${_calculateDiscount(price, originalPrice)}% off',
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 12,
@@ -261,7 +261,7 @@ class _ShopPageState extends State<ShopPage> {
                     if (isDiscounted) ...[
                       const SizedBox(width: 8),
                       Text(
-                        '₱${originalPrice!.toStringAsFixed(0)}',
+                        '₱${originalPrice.toStringAsFixed(0)}',
                         style: const TextStyle(
                           fontSize: 12,
                           color: Colors.grey,

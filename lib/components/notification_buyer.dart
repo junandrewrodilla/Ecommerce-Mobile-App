@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 class BuyerNotificationDialog extends StatefulWidget {
   final String userId;
 
-  BuyerNotificationDialog({required this.userId});
+  const BuyerNotificationDialog({super.key, required this.userId});
 
   @override
   _BuyerNotificationDialogState createState() =>
@@ -183,12 +183,12 @@ class _BuyerNotificationDialogState extends State<BuyerNotificationDialog> {
                                                   notification['isRead']
                                                       ? Colors.grey[300]
                                                       : Colors.red[900],
+                                              radius: 15,
                                               child: const Icon(
                                                 Icons.notifications,
                                                 color: Colors.white,
                                                 size: 18,
                                               ),
-                                              radius: 15,
                                             ),
                                             const SizedBox(width: 10),
                                             Expanded(
@@ -252,8 +252,8 @@ class _BuyerNotificationDialogState extends State<BuyerNotificationDialog> {
                                           text: " on this date: ",
                                         ),
                                         TextSpan(
-                                          text:
-                                              "${_formatTimestamp(notification['timestamp'])}",
+                                          text: _formatTimestamp(
+                                              notification['timestamp']),
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               color: Colors.black87),

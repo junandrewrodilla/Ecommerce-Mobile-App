@@ -263,7 +263,7 @@ class _OrderProductsPageState extends State<OrderProductsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final String userType = 'Buyer';
+    const String userType = 'Buyer';
 
     return WillPopScope(
       onWillPop: () async {
@@ -683,7 +683,7 @@ class _ProductDetailsDialogState extends State<ProductDetailsDialog> {
                         value: widget.order['seller_name'] ?? 'Unknown Seller',
                         trailingWidget: IconButton(
                           iconSize: 20,
-                          icon: Icon(Icons.chat_bubble_outline,
+                          icon: const Icon(Icons.chat_bubble_outline,
                               color: Colors.teal),
                           onPressed: _openChatWithSeller,
                         ),
@@ -782,7 +782,7 @@ class _ProductDetailsDialogState extends State<ProductDetailsDialog> {
                                   Navigator.of(context).pop();
                                 },
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.teal,
+                            backgroundColor: Colors.teal,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8.0),
                             ),
@@ -829,9 +829,9 @@ class _ProductDetailsDialogState extends State<ProductDetailsDialog> {
           if (icon != null)
             Icon(icon, size: 20, color: Colors.teal)
           else
-            Text(
+            const Text(
               "₱",
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: Colors.teal,

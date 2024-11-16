@@ -21,7 +21,8 @@ class BottomNavBar extends StatefulWidget {
   final String userType;
   final int selectedIndex;
 
-  BottomNavBar({
+  const BottomNavBar({
+    super.key,
     required this.userId,
     required this.userType,
     this.selectedIndex = 0,
@@ -51,7 +52,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
       _fetchUnreadChatCount();
     }
 
-    _refreshTimer = Timer.periodic(Duration(seconds: 3), (timer) {
+    _refreshTimer = Timer.periodic(const Duration(seconds: 3), (timer) {
       _fetchNotificationCount();
       if (widget.userType != 'Admin') {
         _fetchUnreadChatCount();

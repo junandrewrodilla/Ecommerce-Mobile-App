@@ -443,7 +443,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           icon: const Icon(Icons.upload_file),
           label: const Text('Upload Valid ID'),
           style: ElevatedButton.styleFrom(
-            primary: const Color(0xFFA00000),
+            backgroundColor: const Color(0xFFA00000),
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             textStyle: TextStyle(fontSize: buttonFontSize),
           ),
@@ -461,7 +461,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             icon: const Icon(Icons.upload_file),
             label: const Text('Upload Certificate of Ancestral Domain'),
             style: ElevatedButton.styleFrom(
-              primary: const Color(0xFFA00000),
+              backgroundColor: const Color(0xFFA00000),
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
               textStyle: TextStyle(fontSize: buttonFontSize),
             ),

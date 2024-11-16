@@ -11,7 +11,8 @@ class ChatPage extends StatefulWidget {
   final String recipientName;
   final Function(String newRecipientId) onRecipientChange;
 
-  ChatPage({
+  const ChatPage({
+    super.key,
     required this.userId,
     required this.userType,
     required this.recipientId,
@@ -36,7 +37,7 @@ class _ChatPageState extends State<ChatPage> {
   List<Map<String, String>> _userList = [];
   List<Map<String, String>> _filteredUserList = [];
   bool _isDropdownOpen = false;
-  List<Map<String, dynamic>> _messageList = []; // Local messages for bot
+  final List<Map<String, dynamic>> _messageList = []; // Local messages for bot
 
   final String _botId = "handimerce_bot";
   final String _botName = "Handimerce Bot";
@@ -142,7 +143,7 @@ class _ChatPageState extends State<ChatPage> {
     if (_selectedRecipientId == _botId) {
       String response = _botResponses[messageText] ??
           "I'm here to help with any questions you have about Handimerce!";
-      Future.delayed(Duration(seconds: 1), () {
+      Future.delayed(const Duration(seconds: 1), () {
         _addLocalMessage(_botId, response);
       });
     } else {
@@ -194,19 +195,19 @@ class _ChatPageState extends State<ChatPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Delete Message"),
-          content: Text("Are you sure you want to delete this message?"),
+          title: const Text("Delete Message"),
+          content: const Text("Are you sure you want to delete this message?"),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context), // Cancel
-              child: Text("Cancel"),
+              child: const Text("Cancel"),
             ),
             TextButton(
               onPressed: () {
                 Navigator.pop(context); // Close the dialog
                 _deleteMessage(msg);
               },
-              child: Text("Delete", style: TextStyle(color: Colors.red)),
+              child: const Text("Delete", style: TextStyle(color: Colors.red)),
             ),
           ],
         );
@@ -246,7 +247,7 @@ class _ChatPageState extends State<ChatPage> {
         appBar: AppBar(
           leading: kIsWeb
               ? IconButton(
-                  icon: Icon(Icons.arrow_back),
+                  icon: const Icon(Icons.arrow_back),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -264,7 +265,7 @@ class _ChatPageState extends State<ChatPage> {
             _selectedRecipientName == null || _selectedRecipientName!.isEmpty
                 ? 'Select User'
                 : 'Chat',
-            style: TextStyle(fontSize: 16),
+            style: const TextStyle(fontSize: 16),
           ),
           backgroundColor: Colors.red[900],
           centerTitle: true,
@@ -302,7 +303,8 @@ class _ChatPageState extends State<ChatPage> {
                   });
                 },
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   decoration: BoxDecoration(
                     color: Colors.red[50],
                     borderRadius: BorderRadius.circular(12),
@@ -310,7 +312,7 @@ class _ChatPageState extends State<ChatPage> {
                       BoxShadow(
                         color: Colors.black.withOpacity(0.1),
                         blurRadius: 8,
-                        offset: Offset(0, 4),
+                        offset: const Offset(0, 4),
                       ),
                     ],
                   ),
@@ -338,7 +340,7 @@ class _ChatPageState extends State<ChatPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Container(
-                  padding: EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: Colors.red[50],
                     borderRadius: BorderRadius.circular(12),
@@ -346,7 +348,7 @@ class _ChatPageState extends State<ChatPage> {
                       BoxShadow(
                         color: Colors.black.withOpacity(0.1),
                         blurRadius: 8,
-                        offset: Offset(0, 4),
+                        offset: const Offset(0, 4),
                       ),
                     ],
                   ),
@@ -364,13 +366,13 @@ class _ChatPageState extends State<ChatPage> {
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide.none,
                           ),
-                          contentPadding:
-                              EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 8),
                         ),
                         style: TextStyle(color: Colors.red[900]),
                       ),
-                      SizedBox(height: 8),
-                      Container(
+                      const SizedBox(height: 8),
+                      SizedBox(
                         height: 200,
                         child: _filteredUserList.isNotEmpty
                             ? ListView.builder(
@@ -428,9 +430,9 @@ class _ChatPageState extends State<ChatPage> {
                                   ? Alignment.centerRight
                                   : Alignment.centerLeft,
                               child: Container(
-                                margin: EdgeInsets.symmetric(
+                                margin: const EdgeInsets.symmetric(
                                     vertical: 6, horizontal: 12),
-                                padding: EdgeInsets.all(12),
+                                padding: const EdgeInsets.all(12),
                                 decoration: BoxDecoration(
                                   color: msg['senderId'] == widget.userId
                                       ? Colors.red[700]
@@ -439,7 +441,7 @@ class _ChatPageState extends State<ChatPage> {
                                   boxShadow: [
                                     BoxShadow(
                                       color: Colors.black.withOpacity(0.05),
-                                      offset: Offset(0, 4),
+                                      offset: const Offset(0, 4),
                                       blurRadius: 8,
                                     ),
                                   ],
@@ -458,14 +460,16 @@ class _ChatPageState extends State<ChatPage> {
                       ],
                     )
                   : _chatRef == null
-                      ? Center(child: Text("Select a user to start chatting"))
+                      ? const Center(
+                          child: Text("Select a user to start chatting"))
                       : StreamBuilder(
                           stream: _chatRef!.orderByChild('timestamp').onValue,
                           builder:
                               (context, AsyncSnapshot<DatabaseEvent> snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator());
+                              return const Center(
+                                  child: CircularProgressIndicator());
                             } else if (!snapshot.hasData ||
                                 snapshot.data!.snapshot.value == null) {
                               return Center(
@@ -503,9 +507,9 @@ class _ChatPageState extends State<ChatPage> {
                                           ? Alignment.centerRight
                                           : Alignment.centerLeft,
                                       child: Container(
-                                        margin: EdgeInsets.symmetric(
+                                        margin: const EdgeInsets.symmetric(
                                             vertical: 6, horizontal: 12),
-                                        padding: EdgeInsets.all(12),
+                                        padding: const EdgeInsets.all(12),
                                         decoration: BoxDecoration(
                                           color: isMe
                                               ? Colors.red[700]
@@ -516,7 +520,7 @@ class _ChatPageState extends State<ChatPage> {
                                             BoxShadow(
                                               color: Colors.black
                                                   .withOpacity(0.05),
-                                              offset: Offset(0, 4),
+                                              offset: const Offset(0, 4),
                                               blurRadius: 8,
                                             ),
                                           ],
@@ -556,19 +560,19 @@ class _ChatPageState extends State<ChatPage> {
                           hintText: 'Type a message...',
                           hintStyle: TextStyle(color: Colors.red[300]),
                           border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(
+                          contentPadding: const EdgeInsets.symmetric(
                               horizontal: 16, vertical: 12),
                         ),
                         style: TextStyle(color: Colors.red[900]),
                       ),
                     ),
                   ),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   CircleAvatar(
                     radius: 24,
                     backgroundColor: Colors.red[900],
                     child: IconButton(
-                      icon: Icon(Icons.send, color: Colors.white),
+                      icon: const Icon(Icons.send, color: Colors.white),
                       onPressed: _sendMessage,
                     ),
                   ),
